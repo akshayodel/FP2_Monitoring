@@ -9,8 +9,8 @@ monitoring_data = pd.read_csv("monitoring_data.csv")
 MAPE = round(monitoring_data['MAPE'].mean(), 4)
 st.write("Average MAPE:", MAPE)
 
-# Displaying monitoring data
-st.write(monitoring_data[['ds', 'MAPE']].to_string(index=False))
+# # Displaying monitoring data
+# st.write(monitoring_data[['ds', 'MAPE']].to_string(index=False))
 
 # Plotting the line graph
 fig, ax = plt.subplots()
@@ -49,8 +49,8 @@ cpi_monitoring_data = pd.read_csv("cpi_Monitoring_data.csv")
 MAPE = round(cpi_monitoring_data['MAPE'].mean(), 4)
 st.write("Average MAPE:", MAPE)
 
-# Displaying CPI monitoring data
-st.write(cpi_monitoring_data[['ds', 'MAPE']].to_string(index=False))
+# # Displaying CPI monitoring data
+# st.write(cpi_monitoring_data[['ds', 'MAPE']].to_string(index=False))
 
 # Plotting the line graph for CPI
 fig_cpi, ax_cpi = plt.subplots()
