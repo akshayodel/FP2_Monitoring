@@ -13,19 +13,16 @@ st.write("Average MAPE:", MAPE)
 st.write(monitoring_data[['ds', 'MAPE']].to_string(index=False))
 
 # Plotting the line graph
-st.line_chart(monitoring_data[['ds', 'MAPE']])
-
-# Define threshold value
-threshold = 0.05
-
-# Plotting the threshold line
-plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
-plt.xlabel('Month')
-plt.ylabel('MAPE')
-plt.title('MAPE with threshold 5%')
+fig, ax = plt.subplots()
+ax.plot(monitoring_data['ds'], monitoring_data['MAPE'])
+ax.axhline(y=0.05, color='r', linestyle='--', label='Threshold')
+ax.set_xlabel('Month')
+ax.set_ylabel('MAPE')
+ax.set_title('MAPE with threshold 5%')
+ax.legend()
 
 # Showing the plot
-st.pyplot(plt)
+st.pyplot(fig)
 
 # Calculate the average of all previous values
 previous_avg = monitoring_data['y'].iloc[:-1].mean()
@@ -56,25 +53,25 @@ st.write("Average MAPE:", MAPE)
 st.write(cpi_monitoring_data[['ds', 'MAPE']].to_string(index=False))
 
 # Plotting the line graph for CPI
-st.line_chart(cpi_monitoring_data[['ds', 'MAPE']])
-
-# Plotting the threshold line for CPI
-plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
-plt.xlabel('Month')
-plt.ylabel('MAPE')
-plt.title('MAPE with threshold 5%')
+fig_cpi, ax_cpi = plt.subplots()
+ax_cpi.plot(cpi_monitoring_data['ds'], cpi_monitoring_data['MAPE'])
+ax_cpi.axhline(y=0.05, color='r', linestyle='--', label='Threshold')
+ax_cpi.set_xlabel('Month')
+ax_cpi.set_ylabel('MAPE')
+ax_cpi.set_title('MAPE with threshold 5%')
+ax_cpi.legend()
 
 # Showing the plot for CPI
-st.pyplot(plt)
+st.pyplot(fig_cpi)
 
 # Calculate the average of all previous values for CPI
-previous_avg = cpi_monitoring_data['CPIIN'].iloc[:-1].mean()
+previous_avg_cpi = cpi_monitoring_data['CPIIN'].iloc[:-1].mean()
 
 # Get the last value of the column for CPI
-last_value = cpi_monitoring_data['CPIIN'].iloc[-1]
+last_value_cpi = cpi_monitoring_data['CPIIN'].iloc[-1]
 
 # Compare the last value with the average for CPI
-if abs(last_value / previous_avg - 1) > 0.1:
+if abs(last_value_cpi / previous_avg_cpi - 1) > 0.1:
     st.write("There is drift in actual data. Model might require retraining")
 else:
     st.write("There is no drift in actual data. Model does not require retraining")
