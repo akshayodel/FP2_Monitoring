@@ -90,7 +90,7 @@ else:
 
 
 #reading dataset
-cpi_monitoring_data = pd.read_csv("cpi_monitoring_data.csv")
+cpi_monitoring_data = pd.read_csv("cpi_Monitoring_data.csv")
 
 
 # In[39]:
