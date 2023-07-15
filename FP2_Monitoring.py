@@ -1,61 +1,31 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # Monitoring Performance of Forecasted Data (Oil Production)
-
-# In[22]:
-
-
-# importing libraries
-
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-# In[30]:
-
-
-#reading dataset
+# Reading dataset
 monitoring_data = pd.read_csv("monitoring_data.csv")
 
+# Calculating average MAPE
+MAPE = round(monitoring_data['MAPE'].mean(), 4)
+st.write("Average MAPE:", MAPE)
 
-# In[31]:
+# Displaying monitoring data
+st.write(monitoring_data[['ds', 'MAPE']].to_string(index=False))
 
+# Plotting the line graph
+st.line_chart(monitoring_data[['ds', 'MAPE']])
 
-#Calculating average MAPE
-
-MAPE = round(monitoring_data['MAPE'].mean(),4)
-print("Average MAPE: ",MAPE)
-
-
-# In[32]:
-
-
-print(monitoring_data[['ds','MAPE']].to_string(index=False))
-
-
-# In[33]:
-
-
-# Plot the line graph
-monitoring_data.plot(x='ds', y='MAPE', figsize=(8, 4))
-
-# Add labels and title
-plt.xlabel('Month')
-plt.ylabel('MAPE')
-plt.title('MAPE with threshold 5%')
 # Define threshold value
 threshold = 0.05
 
-# Plot the threshold line
+# Plotting the threshold line
 plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
+plt.xlabel('Month')
+plt.ylabel('MAPE')
+plt.title('MAPE with threshold 5%')
 
-# Show the plot
-plt.show()
-
-
-# In[34]:
-
+# Showing the plot
+st.pyplot(plt)
 
 # Calculate the average of all previous values
 previous_avg = monitoring_data['y'].iloc[:-1].mean()
@@ -63,103 +33,54 @@ previous_avg = monitoring_data['y'].iloc[:-1].mean()
 # Get the last value of the column
 last_value = monitoring_data['y'].iloc[-1]
 
-
-# In[35]:
-
-
 # Compare the last value with the average
-if abs(last_value/previous_avg-1) > 0.1:
-    print("There is drift in actual data. Model might require retraining")
+if abs(last_value / previous_avg - 1) > 0.1:
+    st.write("There is drift in actual data. Model might require retraining")
 else:
-    print("There is no drift in actual data. Model does not require retraining")
-
-
-# In[36]:
-
+    st.write("There is no drift in actual data. Model does not require retraining")
 
 # Check if any value in the column is greater than 0.05
 if (monitoring_data['MAPE'] > 0.05).any():
-    print("MAPE is exceeding threshold, need to retrain model.")
+    st.write("MAPE is exceeding threshold, need to retrain model.")
 else:
-    print("MAPE is below threshold, no need to retrain model.")
+    st.write("MAPE is below threshold, no need to retrain model.")
 
-
-# # Monitoring Performance of Forecasted Data (CPI)
-
-# In[38]:
-
-
-#reading dataset
+# Reading CPI monitoring dataset
 cpi_monitoring_data = pd.read_csv("cpi_Monitoring_data.csv")
 
+# Calculating average MAPE
+MAPE = round(cpi_monitoring_data['MAPE'].mean(), 4)
+st.write("Average MAPE:", MAPE)
 
-# In[39]:
+# Displaying CPI monitoring data
+st.write(cpi_monitoring_data[['ds', 'MAPE']].to_string(index=False))
 
+# Plotting the line graph for CPI
+st.line_chart(cpi_monitoring_data[['ds', 'MAPE']])
 
-#Calculating average MAPE
-
-MAPE = round(cpi_monitoring_data['MAPE'].mean(),4)
-print("Average MAPE: ",MAPE)
-
-
-# In[41]:
-
-
-print(cpi_monitoring_data[['ds','MAPE']].to_string(index=False))
-
-
-# In[48]:
-
-
-# Plot the line graph
-cpi_monitoring_data.plot(x='ds', y='MAPE', figsize=(8, 4))
-
-# Add labels and title
+# Plotting the threshold line for CPI
+plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
 plt.xlabel('Month')
 plt.ylabel('MAPE')
 plt.title('MAPE with threshold 5%')
-# Define threshold value
-threshold = 0.05
 
-# Plot the threshold line
-plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
+# Showing the plot for CPI
+st.pyplot(plt)
 
-# Show the plot
-plt.show()
-
-
-# In[50]:
-
-
-# Calculate the average of all previous values
+# Calculate the average of all previous values for CPI
 previous_avg = cpi_monitoring_data['CPIIN'].iloc[:-1].mean()
 
-# Get the last value of the column
+# Get the last value of the column for CPI
 last_value = cpi_monitoring_data['CPIIN'].iloc[-1]
 
-
-# In[51]:
-
-
-# Compare the last value with the average
-if abs(last_value/previous_avg-1) > 0.1:
-    print("There is drift in actual data. Model might require retraining")
+# Compare the last value with the average for CPI
+if abs(last_value / previous_avg - 1) > 0.1:
+    st.write("There is drift in actual data. Model might require retraining")
 else:
-    print("There is no drift in actual data. Model does not require retraining")
+    st.write("There is no drift in actual data. Model does not require retraining")
 
-
-# In[52]:
-
-
-# Check if any value in the column is greater than 0.05
+# Check if any value in the column is greater than 0.05 for CPI
 if (cpi_monitoring_data['MAPE'] > 0.05).any():
-    print("MAPE is exceeding threshold, need to retrain model.")
+    st.write("MAPE is exceeding threshold, need to retrain model.")
 else:
-    print("MAPE is below threshold, no need to retrain model.")
-
-
-# In[ ]:
-
-
-
-
+    st.write("MAPE is below threshold, no need to retrain model.")
